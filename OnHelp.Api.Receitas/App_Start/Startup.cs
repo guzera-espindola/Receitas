@@ -13,6 +13,8 @@ namespace OnHelp.Api.Receitas.App_Start
         public void Configuration(IAppBuilder app)
         {
             var config = new HttpConfiguration();
+            config.IncludeErrorDetailPolicy = IncludeErrorDetailPolicy.Always;
+  
 
             app.UseWebApi(config);
             app.RegisterWebApi(config);
