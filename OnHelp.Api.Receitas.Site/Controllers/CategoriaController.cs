@@ -17,10 +17,12 @@ namespace OnHelp.Api.Receitas.Site.Controllers
         {
             try
             {
-                ServiceRepository serviceObj = new ServiceRepository();
-                HttpResponseMessage response = serviceObj.GetResponse("API/categoria");
+                HttpClient Client = new HttpClient();
+                Client.BaseAddress = new Uri("https://onhelpapireceitas.azurewebsites.net/");
+                HttpResponseMessage response = Client.GetAsync("api/categoria").Result;
                 response.EnsureSuccessStatusCode();
-                List<Models.Categoria> categ = response.Content.ReadAsAsync<List<Models.Categoria>>().Result;
+                string result = response.Content.ReadAsStringAsync().Result;
+                IEnumerable<Models.Categoria> categ = JsonConvert.DeserializeObject<List<Models.Categoria>>(result);
                 ViewBag.Title = "All Categorias";
                 return View(categ);
             }
