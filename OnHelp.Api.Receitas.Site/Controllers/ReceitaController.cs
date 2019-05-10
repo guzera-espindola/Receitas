@@ -18,12 +18,10 @@ namespace OnHelp.Api.Receitas.Site.Controllers
         {
             try
             {
-                HttpClient Client = new HttpClient();
-                Client.BaseAddress = new Uri("https://onhelpapireceitas.azurewebsites.net/");
-                HttpResponseMessage response = Client.GetAsync("api/receita").Result;
+                ServiceRepository serviceObj = new ServiceRepository();
+                HttpResponseMessage response = serviceObj.GetResponse("api/receita");
                 response.EnsureSuccessStatusCode();
-                string result = response.Content.ReadAsStringAsync().Result;
-                IEnumerable<Models.Receita> rec = JsonConvert.DeserializeObject<List<Models.Receita>>(result);
+                List<Models.Receita> rec = response.Content.ReadAsAsync<List<Models.Receita>>().Result;
                 ViewBag.Title = "All Receitas";
                 return View(rec);
             }
